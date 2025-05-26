@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>X-Mega-Saw - Services</title>
+        <link rel="stylesheet" href="../CSS/CSS.css" />
+    </head>
+    <header class="modern-header">
+    <h1> X-Mega-Saw </h1>
+    <ul class="nav-links">
+        <a href="Index.html">Home</a>
+        <a href="Products.html">Products</a>
+        <a href="Services.html">Services</a>
+        <a href="Index.html#Contact">Contact</a>
+        <div id="cart-icon">
+          🛒 <span id="cart-count">0</span>
+        </div>
+    </ul>
+    </header>
+    <section>
+      <div class="colour">
+        <div class="subheader">
+          Our services
+        </h1>
+      </div>
+    </section>
+    <section>
+      <ol class="xms-services-list">
+
+        <li>
+          <h3>Precision Hardware Integration</h3>
+          <p>
+            At XMS, we specialize in integrating advanced hardware solutions tailored to your operational needs. From robotics and sensor arrays to high-efficiency machinery, our team ensures seamless interoperability with existing systems. We focus on reliability, performance, and long-term scalability, delivering hardware ecosystems that are both intelligent and durable.
+          </p>
+        </li>
+      
+        <li>
+          <h3>Custom Software Development</h3>
+          <p>
+            Our custom software solutions are designed to solve real business problems. Whether you need an internal tool, customer-facing application, or a complex platform, XMS builds intuitive, scalable software aligned with your goals. We use modern tech stacks, agile methodologies, and robust testing to ensure security, performance, and a smooth user experience.
+          </p>
+        </li>
+      
+        <li>
+          <h3>Data Analytics & Intelligence</h3>
+          <p>
+            Unlock the power of your data with XMS’s advanced analytics services. We help businesses collect, visualize, and act on key insights through dashboards, reporting tools, and predictive models. Whether you’re optimizing workflows or forecasting trends, our solutions turn raw data into clear, actionable intelligence.
+          </p>
+        </li>
+      
+        <li>
+          <h3>Cloud Infrastructure & DevOps</h3>
+          <p>
+            XMS offers robust cloud infrastructure design and DevOps support to keep your digital operations agile and secure. We help businesses migrate, manage, and scale in the cloud—using platforms like AWS, Azure, or GCP—while ensuring reliability, cost efficiency, and continuous integration/deployment.
+          </p>
+        </li>
+      
+        <li>
+          <h3>AI-Powered Automation</h3>
+          <p>
+            Harness the future of efficiency with our AI-driven automation solutions. From intelligent process automation to machine learning models that adapt to your workflows, XMS helps you reduce manual effort, cut costs, and improve accuracy across business functions. We bring AI out of the lab and into your operations, with real-world results.
+          </p>
+        </li>
+      
+      </ol>      
+    </section>
+    <footer>
+        <div class="footer">
+            X-Mega-Saw Limited®
+        </div>
+        <div class="fineprint">
+            2025 - 2025
+        </div>
+    </footer>
+    <div id="cart-modal" class="hidden">
+      <h2>Your Cart</h2>
+      <ul id="cart-items"></ul>
+      <p><strong>Total: $<span id="cart-total">0.00</span></strong></p>
+      <button onclick="openCheckout()">Checkout</button>
+      <button onclick="closeCart()">Close</button>
+    </div>    
+    <div id="checkout-modal" class="hidden">
+      <h2>Checkout</h2>
+      <form id="checkout-form">
+        <label>
+          Name:
+          <input type="text" name="name" required />
+        </label>
+        <label>
+          Email:
+          <input type="email" name="email" required />
+        </label>
+        <label>
+          Address:
+          <textarea name="address" required></textarea>
+        </label>
+    
+        <h3>Order Summary</h3>
+        <ul id="checkout-summary"></ul>
+        <p><strong>Total: $<span id="checkout-total">0.00</span></strong></p>
+    
+        <button type="submit">Submit Order</button>
+        <button type="button" onclick="closeCheckout()">Cancel</button>
+      </form>
+    </div>
+    <script>
+      let cart = [];
+    
+      function addToCart(productName, price) {
+        const existing = cart.find(item => item.name === productName);
+        if (existing) {
+          existing.qty += 1;
+        } else {
+          cart.push({ name: productName, price: price, qty: 1 });
+        }
+        updateCart();
+      }
+    
+      function updateCart() {
+        document.getElementById('cart-count').textContent = cart.length;
+
+        const itemsList = document.getElementById('cart-items');
+          itemsList.innerHTML = '';
+            let total = 0;
+
+        cart.forEach((item, index) => {
+          const li = document.createElement('li');
+            li.textContent = `${item.name} - $${item.price.toFixed(2)} `;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Remove';
+        removeBtn.style.marginLeft = '10px';
+        removeBtn.style.background = '#dc3545';
+        removeBtn.style.color = 'white';
+        removeBtn.style.border = 'none';
+        removeBtn.style.padding = '0.3rem 0.6rem';
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.style.fontSize = '0.8rem';
+
+        removeBtn.onclick = () => {
+          cart.splice(index, 1);
+          updateCart();
+        };
+
+        li.appendChild(removeBtn);
+        itemsList.appendChild(li);
+        total += item.price;
+      });
+
+  document.getElementById('cart-total').textContent = total.toFixed(2);
+}
+    
+      function removeFromCart(productName) {
+        cart = cart.filter(item => item.name !== productName);
+        updateCart();
+      }
+    
+      function openCart() {
+        document.getElementById('cart-modal').classList.remove('hidden');
+      }
+    
+      function closeCart() {
+        document.getElementById('cart-modal').classList.add('hidden');
+      }
+    
+      document.getElementById('cart-icon').addEventListener('click', openCart);
+    
+      function saveCart() {
+        localStorage.setItem('cart', JSON.stringify(cart));
+      }
+    
+      function loadCart() {
+        const saved = localStorage.getItem('cart');
+        if (saved) {
+          cart = JSON.parse(saved);
+          updateCart();
+        }
+      }
+    
+      window.onload = loadCart;
+      const checkoutModal = document.getElementById('checkout-modal');
+      const checkoutSummary = document.getElementById('checkout-summary');
+      const checkoutTotal = document.getElementById('checkout-total');
+      const checkoutForm = document.getElementById('checkout-form');
+    
+      function openCheckout() {
+        document.getElementById('cart-modal').classList.add('hidden');
+        checkoutSummary.innerHTML = '';
+        let total = 0;
+    
+        cart.forEach(item => {
+          const li = document.createElement('li');
+          const textSpan = document.createElement('span');
+          textSpan.innerHTML = `${item.name} - <strong>$${item.price.toFixed(2)}</strong>`;
+          li.appendChild(textSpan);
+          li.appendChild(removeBtn);
+          
+          checkoutSummary.appendChild(li);
+          total += item.price;
+        });
+    
+        checkoutTotal.textContent = total.toFixed(2);
+        checkoutModal.classList.remove('hidden');
+      }
+    
+      function closeCheckout() {
+        checkoutModal.classList.add('hidden');
+      }
+    
+      checkoutForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert("Order placed successfully!");
+        cart = [];
+        updateCart();
+        checkoutForm.reset();
+        closeCheckout();
+      });
+    </script>
+</html>
