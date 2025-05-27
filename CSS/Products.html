@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>X-Mega-Saw - Products</title>
+        <link rel="stylesheet" href="CSS/CSS.css" />
+    </head>
+    <header class="modern-header">
+      <img src="Images/Photo gallery/XMS-Logo.png" alt="Image not found." width="50">
+      </img>
+      <h1> X-Mega-Saw </h1>
+      <ul class="nav-links">
+        <a href="Index.html">Home</a>
+        <a href="Products.html">Products</a>
+        <a href="Services.html">Services</a>
+        <a href="Index.html#Contact">Contact</a>
+        <div id="cart-icon">
+          🛒 <span id="cart-count">0</span>
+        </div>
+    </ul>
+    </header>
+    <section>
+        <div class="colour">
+          <div class="subheader">
+            Products
+          </h1>
+        </div>
+    </section>
+    <div class="hero">
+      Big Sale — Up to 50% Off!
+    </div>
+    
+    <section class="products" id="products">
+      <div class="product">
+        <img src="Images/Products/MSI NVIDIA GeForce RTX 5090.jpg" alt="RTX 5090">
+        <h3>MSI NVIDIA GeForce RTX 5090 32G SUPRIM LIQUID SOC Graphics Card</h3>
+        <div class="oldprice">$6499.00</div> <p>$5999.99</p>
+        <button onclick="addToCart('NVIDIA GeForce RTX 5090', 6499.00)">Add to Cart</button>
+      </div>
+      <div class="product">
+        <img src="Images/Products/ASUS ROG STRIX B550-A GAMING ATX.webp" alt="ASUS ROG STRIX B550-A GAMING ATX Motherboard">
+        <h3>ASUS ROG STRIX B550-A GAMING ATX Motherboard</h3>
+        <p>$324.96</p>
+        <button onclick="addToCart('ASUS ROG STRIX B550-A', 324.96)">Add to Cart</button>
+      </div>
+      <div class="product">
+        <img src="Images/Products/AMD Ryzen 7 9800X3D.jpg" alt="AMD Ryzen 7 9800X3D CPU">
+        <h3>AMD Ryzen 7 9800X3D CPU</h3>
+        <p>$1049.00</p>
+        <button onclick="addToCart('AMD Ryzen 7 9800X3D', 1049.00)">Add to Cart</button>
+      </div>
+      <div class="product">
+        <img src="Images/Products/G.SKILL Ripjaws V Series.webp" alt="G.SKILL Ripjaws V Series">
+        <h3>G.SKILL Ripjaws V Series</h3>
+        <p>$125.35</p>
+        <button onclick="addToCart('G.SKILL Ripjaws V Series', 125.35)">Add to Cart</button>
+      </div>
+      <div class="product">
+        <img src="Images/Products/ASUS ROG Strix 1200W.jpg" alt="ASUS ROG Strix 1200W Platinum ATX 3.1 Power Supply">
+        <h3>ASUS ROG Strix 1200W Platinum ATX 3.1 Power Supply</h3>
+        <p>$458.85</p>
+        <button onclick="addToCart('ASUS ROG Strix 1200W Platinum', 458.85)">Add to Cart</button>
+      </div>
+      <div class="product">
+        <img src="Images/Products/NZXT H7 Flow RGB Black Mid-Tower Case.jpg" alt="NZXT H7 Flow RGB Black Mid-Tower Case">
+        <h3>NZXT H7 Flow RGB Black Mid-Tower Case</h3>
+        <p>$286.35</p>
+        <button onclick="addToCart('NZXT H7 Flow RGB', 286.35)">Add to Cart</button>
+      </div>
+    </section>
+    <footer>
+        <div class="footer">
+          X-Mega-Saw Limited®
+        </div>
+        <div class="fineprint">
+          2025 - 2025
+        </div>
+    </footer>
+    <div id="cart-modal" class="hidden">
+      <h2>Your Cart</h2>
+      <ul id="cart-items"></ul>
+      <p><strong>Total: $<span id="cart-total">0.00</span></strong></p>
+      <button onclick="openCheckout()">Checkout</button>
+      <button onclick="closeCart()">Close</button>
+    </div>    
+    <div id="checkout-modal" class="hidden">
+      <h2>Checkout</h2>
+      <form id="checkout-form">
+        <label>
+          Name:
+          <input type="text" name="name" required />
+        </label>
+        <label>
+          Email:
+          <input type="email" name="email" required />
+        </label>
+        <label>
+          Address:
+          <textarea name="address" required></textarea>
+        </label>
+    
+        <h3>Order Summary</h3>
+        <ul id="checkout-summary"></ul>
+        <p><strong>Total: $<span id="checkout-total">0.00</span></strong></p>
+    
+        <button type="submit">Submit Order</button>
+        <button type="button" onclick="closeCheckout()">Cancel</button>
+      </form>
+    </div>
+    <script>
+      let cart = [];
+    
+      function addToCart(productName, price) {
+        const existing = cart.find(item => item.name === productName);
+        if (existing) {
+          existing.qty += 1;
+        } else {
+          cart.push({ name: productName, price: price, qty: 1 });
+        }
+        updateCart();
+      }
+    
+      function updateCart() {
+        document.getElementById('cart-count').textContent = cart.length;
+
+        const itemsList = document.getElementById('cart-items');
+          itemsList.innerHTML = '';
+            let total = 0;
+
+        cart.forEach((item, index) => {
+          const li = document.createElement('li');
+            li.textContent = `${item.name} - $${item.price.toFixed(2)} `;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Remove';
+        removeBtn.style.marginLeft = '10px';
+        removeBtn.style.background = '#dc3545';
+        removeBtn.style.color = 'white';
+        removeBtn.style.border = 'none';
+        removeBtn.style.padding = '0.3rem 0.6rem';
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.style.fontSize = '0.8rem';
+
+        removeBtn.onclick = () => {
+          cart.splice(index, 1);
+          updateCart();
+        };
+
+        li.appendChild(removeBtn);
+        itemsList.appendChild(li);
+        total += item.price;
+      });
+
+        document.getElementById('cart-total').textContent = total.toFixed(2);
+      }
+    
+      function removeFromCart(productName) {
+        cart = cart.filter(item => item.name !== productName);
+        updateCart();
+      }
+    
+      function openCart() {
+        document.getElementById('cart-modal').classList.remove('hidden');
+      }
+    
+      function closeCart() {
+        document.getElementById('cart-modal').classList.add('hidden');
+      }
+    
+      document.getElementById('cart-icon').addEventListener('click', openCart);
+    
+      function saveCart() {
+        localStorage.setItem('cart', JSON.stringify(cart));
+      }
+    
+      function loadCart() {
+        const saved = localStorage.getItem('cart');
+        if (saved) {
+          cart = JSON.parse(saved);
+          updateCart();
+        }
+      }
+    
+      window.onload = loadCart;
+      const checkoutModal = document.getElementById('checkout-modal');
+      const checkoutSummary = document.getElementById('checkout-summary');
+      const checkoutTotal = document.getElementById('checkout-total');
+      const checkoutForm = document.getElementById('checkout-form');
+    
+      function openCheckout() {
+        document.getElementById('cart-modal').classList.add('hidden');
+        checkoutSummary.innerHTML = '';
+        let total = 0;
+    
+        cart.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+          checkoutSummary.appendChild(li);
+          total += item.price;
+        });
+    
+        checkoutTotal.textContent = total.toFixed(2);
+        checkoutModal.classList.remove('hidden');
+      }
+    
+      function closeCheckout() {
+        checkoutModal.classList.add('hidden');
+      }
+    
+      checkoutForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert("Order placed successfully!");
+        cart = [];
+        updateCart();
+        checkoutForm.reset();
+        closeCheckout();
+      });
+    </script>
+</html>
